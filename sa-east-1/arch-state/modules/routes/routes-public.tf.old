@@ -1,0 +1,55 @@
+resource "aws_route_table" "main_route_table_dmz" {
+
+vpc_id = "${var.vpcid}"
+
+/*Rota para Conta Core*/
+route {
+        cidr_block = "10.17.0.0/16"
+        vpc_peering_connection_id = "${var.peeringid}"
+}
+
+/*Rota para internet*/
+route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = "${aws_internet_gateway.main_internet_gw.id}"
+}
+
+/*Rota para BFA*/
+route {
+       	cidr_block = "10.10.0.0/15"
+        instance_id = "${var.vpnid}"/*Instancia de VPN*/
+}
+
+/*Rota para Alog*/
+route {
+        cidr_block = "10.6.0.0/15"
+        instance_id = "${var.vpnid}"/*Instancia de VPN*/
+}
+
+/*Rota para o DNS*/
+route {
+        cidr_block = "10.18.248.64/27"
+        vpc_peering_connection_id = "${var.peeringnpci_id}"
+}
+route {
+        cidr_block = "10.18.249.64/27"
+        vpc_peering_connection_id = "${var.peeringnpci_id}"
+}
+
+/*Rota para monitoramento*/
+route {
+        cidr_block = "10.18.248.128/28"
+        vpc_peering_connection_id = "${var.peeringnpci_id}"
+}
+route {
+        cidr_block = "10.18.249.128/28"
+        vpc_peering_connection_id = "${var.peeringnpci_id}"
+}
+
+
+tags {
+        Name = "${var.tag_project}-route-dmz"
+}
+
+
+}

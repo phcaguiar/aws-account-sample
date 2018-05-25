@@ -1,0 +1,36 @@
+/*rota usada na AZ C envia o trafego para a instancia de NAT da AZ C*/
+resource "aws_route_table" "main_route_table_default_c" {
+
+vpc_id = "${var.vpcid}"
+
+/*Rota para BFA*/
+route {
+        cidr_block = "10.10.0.0/15"
+        instance_id = "${var.vpnid}"/*Instancia de VPN*/
+}
+
+/*Rota para Alog*/
+route {
+        cidr_block = "10.6.0.0/15"
+        instance_id = "${var.vpnid}"/*Instancia de VPN*/
+}
+
+route {
+        cidr_block = "10.17.0.0/16"
+        vpc_peering_connection_id = "${var.peeringid}"
+}
+
+route {
+        cidr_block = "0.0.0.0/0"
+        instance_id = "${var.nat-cid}"/*id da instancia de nat-c*/
+}
+route {
+        cidr_block = "10.18.248.0/21"
+        vpc_peering_connection_id = "${var.peeringnpci_id}"
+}
+
+tags {
+        Name = "${var.tag_project}-route-default-c"
+	}
+}	
+

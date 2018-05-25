@@ -1,0 +1,5 @@
+region = "sa-east-1"
+project-name = "paguiar"
+terraform_credentials_file = ".config/credentials"
+environment = "prod"
+cidrblockvpc = "10.0.0.0/16"

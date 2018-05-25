@@ -1,0 +1,9 @@
+data "aws_vpc_endpoint_service" "data-sa-east-1-s3" {
+    service = "s3"
+}
+
+resource "aws_vpc_endpoint" "endpoint-sa-east-1-s3" {
+    vpc_id = "${var.vpcid}"
+    service_name = "${data.aws_vpc_endpoint_service.data-sa-east-1-s3.service_name}"
+    route_table_ids = ["${aws_route_table.main_route_table_default_a.id}","${aws_route_table.main_route_table_default_c.id}"]
+}
